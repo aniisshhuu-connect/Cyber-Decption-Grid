@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SentinelX | Alerts</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav class="top-nav">
+      <div class="top-nav-inner">
+        <a class="nav-pill" data-nav="dashboard" href="dashboard.html">Dashboard</a>
+        <a class="nav-pill" data-nav="alerts" href="alerts.html">Alerts</a>
+        <a class="nav-pill" data-nav="logs" href="logs.html">Access Logs</a>
+        <a class="nav-pill" data-nav="risk" href="user-risk.html">User Risk</a>
+        <a class="nav-pill" data-nav="login" href="login.html">Logout</a>
+      </div>
+    </nav>
+
+    <main class="app-shell">
+      <section class="page-header glass-card">
+        <p class="breadcrumbs">Home > Alerts</p>
+        <div class="page-title-row">
+          <h1 class="page-title">ALERTS</h1>
+          <div class="status-live"><span class="pulse-dot"></span>Response Team Live</div>
+        </div>
+        <p id="error-text" class="meta hidden"></p>
+      </section>
+
+      <section class="risk-grid">
+        <article class="metric glass-card">
+          <div class="metric-label">Total Alerts</div>
+          <div id="total-alerts" class="metric-value">0</div>
+        </article>
+        <article class="metric glass-card">
+          <div class="metric-label">Critical Alerts</div>
+          <div id="critical-alerts" class="metric-value">0</div>
+        </article>
+        <article class="metric glass-card">
+          <div class="metric-label">Honeytoken Event Ratio</div>
+          <div class="metric-value">96%</div>
+        </article>
+      </section>
+
+      <section class="main-grid" style="margin-top:16px; grid-template-columns: 1.2fr 1.8fr;">
+        <article class="section-card glass-card">
+          <div class="section-head">
+            <h2>Priority Queue</h2>
+            <span class="meta">Neon Magenta = Critical</span>
+          </div>
+          <div id="alerts-list" class="alert-list"></div>
+        </article>
+
+        <article class="section-card glass-card">
+          <div class="section-head">
+            <h2>Alert Timeline</h2>
+            <span class="meta">Click row for details</span>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date/Time</th>
+                  <th>User</th>
+                  <th>Type</th>
+                  <th>Message</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="alerts-table-body"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="js/alerts.js"></script>
+  </body>
+</html>

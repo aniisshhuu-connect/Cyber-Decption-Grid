@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xan CRM | Sign In</title>
+    <link rel="stylesheet" href="styles.css?v=10" />
+  </head>
+  <body data-page="login">
+    <main class="login-shell">
+      <section class="auth-card spotlight-card">
+
+        <div class="auth-brand">
+          <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
+            <path d="M16 14l-2 6"/>
+            <path d="M12 16l-2 6"/>
+            <path d="M8 14l-2 6"/>
+          </svg>
+        </div>
+
+        <form id="login-form" class="form-grid" novalidate>
+          <div>
+            <label class="field-label" for="login-username">Work Email or ID</label>
+            <input id="login-username" class="field-input" name="username" autocomplete="username" placeholder="admin / analyst / employee" required />
+          </div>
+
+          <div>
+            <label class="field-label" for="login-password">Password</label>
+            <input
+              id="login-password"
+              class="field-input"
+              type="password"
+              name="password"
+              autocomplete="current-password"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="margin-top: 4px; height: 40px; font-size: 14px;">Sign In</button>
+          <p id="auth-message" class="form-message">Demo: admin / analyst / employee — password matches username + 123.</p>
+        </form>
+
+        <p class="switch-line">No account? <a href="register.html">Create one</a></p>
+      </section>
+    </main>
+
+    <script defer src="script.js?v=10"></script>
+    <script>
+      document.addEventListener('mousemove', (e) => {
+        document.querySelectorAll('.spotlight-card').forEach(card => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--mouse-x', `${e.clientX - r.left}px`);
+          card.style.setProperty('--mouse-y', `${e.clientY - r.top}px`);
+        });
+      });
+    </script>
+  </body>
+</html>

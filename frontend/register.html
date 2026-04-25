@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xan CRM | Register</title>
+    <link rel="stylesheet" href="styles.css?v=10" />
+  </head>
+  <body data-page="register">
+    <main class="auth-shell">
+      <section class="auth-card spotlight-card">
+
+        <div class="auth-brand">
+          <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
+            <path d="M16 14l-2 6"/>
+            <path d="M12 16l-2 6"/>
+            <path d="M8 14l-2 6"/>
+          </svg>
+          <p class="auth-brand-name">Create Account</p>
+          <p class="auth-brand-sub">Provision role-based access</p>
+        </div>
+
+        <form id="register-form" class="form-grid" novalidate>
+          <div>
+            <label class="field-label" for="register-username">Username</label>
+            <input id="register-username" class="field-input" name="username" autocomplete="username" placeholder="Choose a username" required />
+          </div>
+
+          <div>
+            <label class="field-label" for="register-password">Password</label>
+            <input
+              id="register-password"
+              class="field-input"
+              type="password"
+              name="password"
+              autocomplete="new-password"
+              placeholder="Min. 6 characters"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="field-label" for="register-role">Role</label>
+            <select id="register-role" class="field-input" name="role" required>
+              <option value="">Select a role</option>
+              <option value="Admin">Admin</option>
+              <option value="Security Analyst">Security Analyst</option>
+              <option value="Employee">Employee</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="margin-top: 4px; height: 40px; font-size: 14px;">Create Account</button>
+          <p id="auth-message" class="form-message">All fields are required. Password must be 6+ characters.</p>
+        </form>
+
+        <p class="switch-line">Already have an account? <a href="login.html">Sign in</a></p>
+      </section>
+    </main>
+
+    <script defer src="script.js?v=10"></script>
+    <script>
+      document.addEventListener('mousemove', (e) => {
+        document.querySelectorAll('.spotlight-card').forEach(card => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--mouse-x', `${e.clientX - r.left}px`);
+          card.style.setProperty('--mouse-y', `${e.clientY - r.top}px`);
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SentinelX | User Risk</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <div class="top-nav-inner">
+        <a class="nav-pill" data-nav="dashboard" href="dashboard.html">Dashboard</a>
+        <a class="nav-pill" data-nav="alerts" href="alerts.html">Alerts</a>
+        <a class="nav-pill" data-nav="logs" href="logs.html">Access Logs</a>
+        <a class="nav-pill" data-nav="risk" href="user-risk.html">User Risk</a>
+        <a class="nav-pill" data-nav="login" href="login.html">Logout</a>
+      </div>
+    </nav>
+
+    <main class="app-shell">
+      <section class="page-header glass-card">
+        <p class="breadcrumbs">Home > User Risk Detail</p>
+        <div class="page-title-row">
+          <h1 class="page-title">USER RISK</h1>
+          <div class="status-live"><span class="pulse-dot"></span>Behavioral Profile Active</div>
+        </div>
+        <p id="error-text" class="meta hidden"></p>
+      </section>
+
+      <section class="filter-bar glass-card">
+        <div>
+          <label class="label" for="user-input">User ID</label>
+          <input id="user-input" class="input" placeholder="Enter user id" />
+        </div>
+        <div style="display:flex; gap:8px;">
+          <div>
+            <label class="label">Action</label>
+            <button id="load-user-btn" class="button button-primary">Load Profile</button>
+          </div>
+          <div>
+            <label class="label">Admin</label>
+            <button id="delete-user-btn" class="button" style="background:#ff3333; color:white; border:none; display:none;">Delete User</button>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">User ID</div>
+          <div id="user-id" class="metric-value" style="font-size:22px;">-</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">User</div>
+          <div id="user-name" class="metric-value" style="font-size:22px;">-</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Risk Score</div>
+          <div id="risk-score" class="metric-value" style="font-size:22px;">0</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Risk Events</div>
+          <div id="history-count" class="metric-value" style="font-size:22px;">0</div>
+        </div>
+      </section>
+
+      <section class="risk-grid" style="margin-top:16px;">
+        <article class="section-card glass-card" style="grid-column: span 2;">
+          <div class="section-head">
+            <h2>Risk Score Trend</h2>
+            <div id="risk-level"></div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="risk-user-chart" height="140"></canvas>
+          </div>
+        </article>
+
+        <article class="section-card glass-card">
+          <div class="section-head">
+            <h2>Risk Context</h2>
+            <span class="meta">Threat posture</span>
+          </div>
+          <div class="metric-grid">
+            <div class="mini-item">
+              <span>Honeytoken Trigger Density</span>
+              <span class="status-badge status-suspicious">High</span>
+            </div>
+            <div class="mini-item">
+              <span>Credential Abuse Pattern</span>
+              <span class="status-badge status-normal">Observed</span>
+            </div>
+            <div class="mini-item">
+              <span>Policy Drift</span>
+              <span class="status-badge status-open">Open</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="section-card glass-card" style="margin-top:16px;">
+        <div class="section-head">
+          <h2>Risk History</h2>
+          <span class="meta">Recent 50 records</span>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Date/Time</th>
+                <th>Old Score</th>
+                <th>Points Added</th>
+                <th>New Score</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody id="risk-history-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="js/risk.js"></script>
+  </body>
+</html>

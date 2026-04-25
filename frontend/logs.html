@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SentinelX | Access Logs</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav class="top-nav">
+      <div class="top-nav-inner">
+        <a class="nav-pill" data-nav="dashboard" href="dashboard.html">Dashboard</a>
+        <a class="nav-pill" data-nav="alerts" href="alerts.html">Alerts</a>
+        <a class="nav-pill" data-nav="logs" href="logs.html">Access Logs</a>
+        <a class="nav-pill" data-nav="risk" href="user-risk.html">User Risk</a>
+        <a class="nav-pill" data-nav="login" href="login.html">Logout</a>
+      </div>
+    </nav>
+
+    <main class="app-shell">
+      <section class="page-header glass-card">
+        <p class="breadcrumbs">Home > Access Logs</p>
+        <div class="page-title-row">
+          <h1 class="page-title">ACCESS LOGS</h1>
+          <div class="status-live"><span class="pulse-dot"></span>Forensic Stream Ready</div>
+        </div>
+        <p id="error-text" class="meta hidden"></p>
+      </section>
+
+      <section class="filter-bar glass-card">
+        <div>
+          <label class="label" for="logs-search">Search</label>
+          <input class="input" id="logs-search" placeholder="username, resource, ip" />
+        </div>
+        <div>
+          <label class="label" for="status-filter">Status</label>
+          <select id="status-filter" class="select">
+            <option value="">All</option>
+            <option value="Normal">Normal</option>
+            <option value="Suspicious">Suspicious</option>
+          </select>
+        </div>
+        <div>
+          <label class="label" for="type-filter">Access Type</label>
+          <select id="type-filter" class="select">
+            <option value="">All</option>
+            <option value="READ">Read</option>
+            <option value="WRITE">Write</option>
+            <option value="EXPORT">Export</option>
+          </select>
+        </div>
+        <div>
+          <label class="label">Total Logs</label>
+          <div id="logs-count" class="metric-value" style="font-size:20px;">0</div>
+        </div>
+        <div>
+          <label class="label">Suspicious Logs</label>
+          <div id="suspicious-count" class="metric-value" style="font-size:20px;">0</div>
+        </div>
+        <div>
+          <label class="label">Export</label>
+          <button id="export-logs-btn" class="button button-primary">Export CSV</button>
+        </div>
+      </section>
+
+      <section class="section-card glass-card" style="margin-top:16px;">
+        <div class="section-head">
+          <h2>Access Event Ledger</h2>
+          <span class="meta">Click row for modal details</span>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Date/Time</th>
+                <th>User</th>
+                <th>Resource / Honeytoken</th>
+                <th>IP Address</th>
+                <th>Access Type</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="logs-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="js/logs.js"></script>
+  </body>
+</html>

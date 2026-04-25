@@ -1,0 +1,114 @@
+CREATE DATABASE IF NOT EXISTS sentinelx;
+USE sentinelx;
+
+CREATE TABLE IF NOT EXISTS ROLES (
+    role_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS DEPARTMENTS (
+    department_id INT AUTO_INCREMENT PRIMARY KEY,
+    department_name VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS USERS (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    role_id INT,
+    department_id INT,
+    risk_score DECIMAL(10,2) NOT NULL DEFAULT 0,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (role_id) REFERENCES ROLES(role_id),
+    FOREIGN KEY (department_id) REFERENCES DEPARTMENTS(department_id)
+);
+
+CREATE TABLE IF NOT EXISTS RESOURCES (
+    resource_id INT AUTO_INCREMENT PRIMARY KEY,
+    resource_name VARCHAR(150) NOT NULL,
+    resource_type VARCHAR(100) NOT NULL,
+    department_id INT,
+    is_sensitive BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (department_id) REFERENCES DEPARTMENTS(department_id)
+);
+
+CREATE TABLE IF NOT EXISTS HONEYTOKENS (
+    token_id INT AUTO_INCREMENT PRIMARY KEY,
+    resource_id INT NOT NULL,
+    token_name VARCHAR(150) NOT NULL,
+    token_value VARCHAR(255) NOT NULL,
+    risk_points INT NOT NULL DEFAULT 10,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (resource_id) REFERENCES RESOURCES(resource_id)
+);
+
+CREATE TABLE IF NOT EXISTS ACCESS_LOGS (
+    log_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    resource_id INT NOT NULL,
+    token_id INT NULL,
+    access_type VARCHAR(50) NOT NULL,
+    ip_address VARCHAR(45) NOT NULL,
+    is_honeytoken BOOLEAN NOT NULL DEFAULT FALSE,
+    access_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id),
+    FOREIGN KEY (resource_id) REFERENCES RESOURCES(resource_id),
+    FOREIGN KEY (token_id) REFERENCES HONEYTOKENS(token_id)
+);
+
+CREATE TABLE IF NOT EXISTS ALERTS (
+    alert_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    access_log_id BIGINT NOT NULL,
+    alert_type VARCHAR(100) NOT NULL,
+    severity ENUM('LOW', 'MEDIUM', 'HIGH', 'CRITICAL') NOT NULL DEFAULT 'MEDIUM',
+    message TEXT NOT NULL,
+    status ENUM('OPEN', 'ACKNOWLEDGED', 'RESOLVED') NOT NULL DEFAULT 'OPEN',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id),
+    FOREIGN KEY (access_log_id) REFERENCES ACCESS_LOGS(log_id)
+);
+
+CREATE TABLE IF NOT EXISTS LOGIN_HISTORY (
+    login_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NULL,
+    username_attempted VARCHAR(100) NOT NULL,
+    ip_address VARCHAR(45),
+    user_agent VARCHAR(255),
+    login_status ENUM('SUCCESS', 'FAILED') NOT NULL,
+    failure_reason VARCHAR(255),
+    login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS RISK_HISTORY (
+    risk_event_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    old_score DECIMAL(10,2) NOT NULL,
+    points_added INT NOT NULL,
+    new_score DECIMAL(10,2) NOT NULL,
+    reason VARCHAR(255) NOT NULL,
+    event_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS AUDIT_TRAIL (
+    audit_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    actor_user_id INT NULL,
+    action VARCHAR(120) NOT NULL,
+    target_type VARCHAR(120),
+    target_id VARCHAR(120),
+    metadata TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (actor_user_id) REFERENCES USERS(user_id)
+);
+
+CREATE INDEX idx_access_logs_user_time ON ACCESS_LOGS(user_id, access_time);
+CREATE INDEX idx_alerts_status_created ON ALERTS(status, created_at);
+CREATE INDEX idx_risk_history_user_time ON RISK_HISTORY(user_id, event_time);
