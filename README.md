@@ -1,4 +1,4 @@
-# SentinelX Backend (Flask + MySQL)
+# Backend (Flask + MySQL)
 
 Production-style backend for SentinelX, an insider threat detection platform using honeytokens.
 
